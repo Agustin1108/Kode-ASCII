@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Konversi Huruf & Angka</title>
+  <style>
+    :root {
+      --biru-terang: #e3f2fd;
+      --biru-utama: #2196f3;
+      --biru-gelap: #1565c0;
+      --putih: #ffffff;
+      --abu: #f4f4f4;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: var(--abu);
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .card {
+      background: var(--putih);
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+      max-width: 600px;
+      width: 100%;
+    }
+
+    h1 {
+      text-align: center;
+      color: var(--biru-gelap);
+      margin-bottom: 20px;
+    }
+
+    .mode-toggle {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    .mode-toggle button {
+      background-color: var(--biru-utama);
+      color: var(--putih);
+      border: none;
+      border-radius: 8px;
+      padding: 10px 20px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .mode-toggle button:hover {
+      background-color: var(--biru-gelap);
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      border: 2px solid var(--biru-utama);
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+
+    input:focus, textarea:focus {
+      border-color: var(--biru-gelap);
+      outline: none;
+    }
+
+    textarea {
+      resize: none;
+      height: 120px;
+      background-color: var(--biru-terang);
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1 id="judul">Konversi Huruf ke Kode Angka</h1>
+
+    <div class="mode-toggle">
+      <button onclick="toggleMode()">Beralih Mode</button>
+    </div>
+
+    <input type="text" id="inputText" placeholder="Ketik di sini...">
+    <textarea id="outputArea" readonly placeholder="Hasil konversi akan muncul di sini"></textarea>
+  </div>
+
+  <script>
+    let mode = "huruf-ke-angka"; // mode default
+
+    const inputText = document.getElementById("inputText");
+    const outputArea = document.getElementById("outputArea");
+    const judul = document.getElementById("judul");
+
+    inputText.addEventListener("input", () => {
+      const value = inputText.value.trim();
+
+      if (mode === "huruf-ke-angka") {
+        const hasil = Array.from(value).map(char => char.charCodeAt(0)).join(' ');
+        outputArea.value = hasil;
+      } else {
+        const hasil = value.split(/\s+/).map(code => {
+          const num = parseInt(code);
+          return isNaN(num) ? '' : String.fromCharCode(num);
+        }).join('');
+        outputArea.value = hasil;
+      }
+    });
+
+    function toggleMode() {
+      mode = mode === "huruf-ke-angka" ? "angka-ke-huruf" : "huruf-ke-angka";
+      inputText.value = '';
+      outputArea.value = '';
+      inputText.placeholder = mode === "huruf-ke-angka"
+        ? "Ketik huruf di sini..."
+        : "Ketik angka (ASCII) dipisah spasi...";
+      outputArea.placeholder = "Hasil konversi akan muncul di sini";
+      judul.textContent = mode === "huruf-ke-angka"
+        ? "Konversi Huruf ke Kode Angka"
+        : "Konversi Kode Angka ke Huruf";
+    }
+  </script>
+</body>
+</html>
